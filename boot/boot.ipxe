@@ -1,0 +1,3 @@
+#!ipxe
+####       boot.dividat.com initial loader        ####
+chain --autofree ubuntu/boot.ipxe
