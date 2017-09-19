@@ -1,0 +1,68 @@
+- name: Install git
+  become: true
+  apt:
+    name: git
+
+- name: Get nvm
+  git:
+    repo: https://github.com/creationix/nvm.git
+    dest: "{{ nvm_dir }}"
+    version: "{{ nvm_version }}"
+
+
+# This adds nvm to bashrc for the case that manual intervention is necessary (ansilbe does not source bashrc)
+- name: Add nvm to bashrc
+  blockinfile:
+    dest: "{{ ansible_env.HOME}}/.bashrc"
+    block: |
+      export NVM_DIR="{{ nvm_dir }}"
+      [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+
+
+- name: Install node
+  environment:
+    NVM_DIR: "{{ nvm_dir }}"
+  shell: >
+    . {{ nvm }} &&
+    nvm install {{ node_version }} &&
+    nvm use {{ node_version }}
+
+- name: Install global npm dependencies
+  environment:
+    NVM_DIR: "{{ nvm_dir }}"
+  shell: >
+    . {{ nvm }} &&
+    npm install -g yarn pm2
+
+- name: Get driver
+  git:
+    repo: https://github.com/dividat/driver.git
+    dest: "{{ driver_dir }}"
+    version: "{{ version }}"
+
+# TODO: fix bug in dependencies that makes yarn fail without running `npm install` first
+- name: Install driver dependencies
+  environment:
+    NVM_DIR: "{{ nvm_dir }}"
+  shell: >
+    . {{ nvm }} &&
+    cd {{ driver_dir }} &&
+    npm install
+
+- name: Create pm2 process file
+  template:
+    src: templates/config.js.j2
+    dest: "{{ driver_dir }}/pm2.config.js"
+
+- name: Start or reload process
+  environment:
+    NVM_DIR: "{{ nvm_dir }}"
+  shell: >
+    . {{ nvm }} &&
+    pm2 startOrReload {{ driver_dir }}/pm2.config.js &&
+    pm2 save
+
+- name: pm2 startup
+  become: true
+  shell: >
+    env PATH=$PATH:{{ nvm_dir }}/versions/node/{{ node_version }}/bin {{ nvm_dir }}/versions/node/{{ node_version }}/lib/node_modules/pm2/bin/pm2 startup systemd -u {{ user }} --hp /home/{{ user }}

@@ -1,0 +1,8 @@
+# playbook to setup Ubuntu for Play
+
+- hosts: all
+  remote_user: dividat
+  roles:
+    - { role: roles/ubuntu_base }
+    - { role: roles/driver }
+    - { role: roles/ubuntu_play }

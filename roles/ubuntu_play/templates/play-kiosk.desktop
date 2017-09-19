@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Exec=/home/play/bin/play-kiosk.sh
+Hidden=false
+NoDisplay=false
+X-GNOME-Autostart-enabled=true
+Name=Dividat Play
+Comment=

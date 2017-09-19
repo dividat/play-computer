@@ -1,0 +1,12 @@
+user: "{{ ansible_env.USER }}"
+version: master
+
+driver_dir: "/home/{{ user }}/driver"
+
+# nvm
+nvm_dir: "/home/{{ user }}/.nvm"
+nvm: "{{ nvm_dir }}/nvm.sh"
+nvm_version: v0.33.4
+
+# node
+node_version: v8.5.0

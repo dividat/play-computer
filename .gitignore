@@ -1,1 +1,4 @@
 build/
+
+# ansible retry files
+*.retry
