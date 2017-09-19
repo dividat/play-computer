@@ -3,7 +3,13 @@
   apt:
     name: git
 
+- name: Ensure user exists
+  user:
+    name: "{{ user }}"
+
 - name: Get nvm
+  become: true
+  become_user: "{{ user }}"
   git:
     repo: https://github.com/creationix/nvm.git
     dest: "{{ nvm_dir }}"
@@ -12,6 +18,8 @@
 
 # This adds nvm to bashrc for the case that manual intervention is necessary (ansilbe does not source bashrc)
 - name: Add nvm to bashrc
+  become: true
+  become_user: "{{ user }}"
   blockinfile:
     dest: "{{ ansible_env.HOME}}/.bashrc"
     block: |
@@ -20,6 +28,8 @@
 
 
 - name: Install node
+  become: true
+  become_user: "{{ user }}"
   environment:
     NVM_DIR: "{{ nvm_dir }}"
   shell: >
@@ -28,6 +38,8 @@
     nvm use {{ node_version }}
 
 - name: Install global npm dependencies
+  become: true
+  become_user: "{{ user }}"
   environment:
     NVM_DIR: "{{ nvm_dir }}"
   shell: >
@@ -35,6 +47,8 @@
     npm install -g yarn pm2
 
 - name: Get driver
+  become: true
+  become_user: "{{ user }}"
   git:
     repo: https://github.com/dividat/driver.git
     dest: "{{ driver_dir }}"
@@ -42,6 +56,8 @@
 
 # TODO: fix bug in dependencies that makes yarn fail without running `npm install` first
 - name: Install driver dependencies
+  become: true
+  become_user: "{{ user }}"
   environment:
     NVM_DIR: "{{ nvm_dir }}"
   shell: >
@@ -50,11 +66,15 @@
     npm install
 
 - name: Create pm2 process file
+  become: true
+  become_user: "{{ user }}"
   template:
     src: templates/config.js.j2
     dest: "{{ driver_dir }}/pm2.config.js"
 
 - name: Start or reload process
+  become: true
+  become_user: "{{ user }}"
   environment:
     NVM_DIR: "{{ nvm_dir }}"
   shell: >
