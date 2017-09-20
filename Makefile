@@ -1,16 +1,17 @@
 BUILD_DIR = build
 
 # Bootable Image
-BOOT_ISO = $(BUILD_DIR)/images/boot.iso
+BOOT_IMAGES = $(BUILD_DIR)/images/boot.iso $(BUILD_DIR)/images/boot.usb
 UBUNTU = $(BUILD_DIR)/ubuntu/boot.ipxe $(BUILD_DIR)/ubuntu/ks.cfg
 
-build: $(BOOT_ISO) $(BUILD_DIR)/boot.ipxe $(UBUNTU)
+build: $(BOOT_IMAGES) $(BUILD_DIR)/boot.ipxe $(UBUNTU)
 
 # Build the boot image
-$(BOOT_ISO): boot/embed.ipxe
+$(BOOT_IMAGES): boot/embed.ipxe
 	mkdir -p $(BUILD_DIR)/images
 	cd boot/ipxe/src && make EMBED=../../embed.ipxe
-	cp boot/ipxe/src/bin/ipxe.iso $(BOOT_ISO)
+	cp boot/ipxe/src/bin/ipxe.iso $(BUILD_DIR)/images/boot.iso
+	cp boot/ipxe/src/bin/ipxe.usb $(BUILD_DIR)/images/boot.usb
 
 # Copy main ipxe script
 $(BUILD_DIR)/boot.ipxe: boot/boot.ipxe
