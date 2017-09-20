@@ -26,7 +26,7 @@ $(UBUNTU): boot/ubuntu/boot.ipxe boot/ubuntu/ks.cfg
 
 # Deploy website to boot.dividat.com
 deploy: build
-	s3cmd sync $(BUILD_DIR) s3://boot.dividat.com/
+	aws s3 sync $(BUILD_DIR) "s3://boot.dividat.com" --region="eu-central-1" --delete --cache-control max-age=5
 
 
 .PHONY: clean

@@ -20,7 +20,7 @@ Build boot images, scripts and configurations for boot website:
 
       make
 
-Deploy site to <http://boot.dividat.com/> ([s3cmd](https://github.com/s3tools/s3cmd) required):
+Deploy site to <http://boot.dividat.com/> ([AWS CLI](https://aws.amazon.com/cli/) required):
 
       make deploy
 
