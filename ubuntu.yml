@@ -4,5 +4,5 @@
   remote_user: dividat
   roles:
     - { role: roles/ubuntu_base }
-    - { role: roles/driver, user: 'dividat' }
+    - { role: roles/driver, user: 'dividat', version: 'linux-link-local' }
     - { role: roles/ubuntu_play }
