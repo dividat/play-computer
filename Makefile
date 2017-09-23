@@ -19,10 +19,10 @@ $(BUILD_DIR)/boot.ipxe: boot/boot.ipxe
 
 
 # Copy Ubuntu boot script and kickstart config
-$(UBUNTU): boot/ubuntu/boot.ipxe boot/ubuntu/ks.cfg
+$(UBUNTU): boot/ubuntu/boot.ipxe boot/ubuntu/preseed.cfg
 	mkdir -p $(BUILD_DIR)/ubuntu
 	cp boot/ubuntu/boot.ipxe $(BUILD_DIR)/ubuntu/boot.ipxe
-	cp boot/ubuntu/ks.cfg $(BUILD_DIR)/ubuntu/ks.cfg
+	cp boot/ubuntu/preseed.cfg $(BUILD_DIR)/ubuntu/preseed.cfg
 
 
 # Deploy website to boot.dividat.com
