@@ -21,7 +21,7 @@
   become: true
   become_user: "{{ user }}"
   blockinfile:
-    dest: "{{ ansible_env.HOME}}/.bashrc"
+    dest: "/home/{{ user }}/.bashrc"
     block: |
       export NVM_DIR="{{ nvm_dir }}"
       [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
