@@ -1,0 +1,85 @@
+- name: Install OpenSSH server
+  become: true
+  apt:
+    name: openssh-server
+
+
+- name: Ensure user exists
+  user:
+    name: "{{ user }}"
+
+- name: Ensure ~/.ssh directory exists
+  become: true
+  become_user: "{{ user }}"
+  file:
+    path: /home/{{ user }}/.ssh/
+    owner: "{{ user }}"
+    group: "{{ user }}"
+    state: directory
+
+
+- name: Install authorized_keys
+  become: true
+  become_user: "{{ user }}"
+  template:
+    src: templates/authorized_keys
+    dest: /home/{{ user }}/.ssh/authorized_keys
+
+- name: Only allow public key authentication
+  become: true
+  blockinfile:
+    dest: /etc/ssh/sshd_config
+    block: |
+      AllowUsers {{ user }}
+      PubkeyAuthentication yes
+      PasswordAuthentication no
+
+- name: Reload sshd
+  become: true
+  service:
+    name: ssh
+    state: reloaded
+
+- name: Enable NOPASSWD sudo access
+  become: true
+  lineinfile:
+    dest: /etc/sudoers
+    line: "{{ user }} ALL=(ALL) NOPASSWD: ALL"
+
+
+# Zerotier-one
+
+- name: Add zerotier gpg key to apt
+  become: true
+  apt_key:
+    id: 23E52A61
+    url: https://www.zerotier.com/misc/contact@zerotier.com.gpg
+
+- name: Add zerotier apt repository
+  become: true
+  apt_repository:
+    repo: deb http://download.zerotier.com/debian/xenial xenial main
+
+- name: Install zerotier-one
+  become: true
+  apt:
+    name: zerotier-one
+
+- name: Enable and start zerotier service
+  become: true
+  service:
+    name: zerotier-one
+    enabled: yes
+    state: started
+
+- name: Join zerotier network
+  become: true
+  shell: zerotier-cli join {{ zerotier_network_id }}
+
+- name: Get zerotier address (1/2)
+  shell: "cat /var/lib/zerotier-one/identity.public | cut -d : -f 1"
+  register: zerotier_address
+
+- name: Get zerotier address (2/2)
+  debug:
+    msg: "ZeroTier address: {{ zerotier_address.stdout }}"

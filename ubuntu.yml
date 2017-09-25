@@ -6,3 +6,4 @@
     - { role: roles/ubuntu_base }
     - { role: roles/driver, user: 'dividat' }
     - { role: roles/ubuntu_play, clean_all_play_data: false }
+    - { role: roles/remote_management, user: 'dividat' }
