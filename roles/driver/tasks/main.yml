@@ -63,7 +63,7 @@
   shell: >
     . {{ nvm }} &&
     cd {{ driver_dir }} &&
-    npm install
+    npm install --production
 
 - name: Create pm2 process file
   become: true
