@@ -39,7 +39,7 @@
   service:
     name: ssh
     state: reloaded
-  # during preseed this may fail, ignore and continue
+  # May fail during preseed
   ignore_errors: yes
 
 - name: Enable NOPASSWD sudo access
@@ -73,15 +73,20 @@
     name: zerotier-one
     enabled: yes
     state: started
+  # May fail during preseed
+  ignore_errors: true
 
 - name: Join zerotier network
   become: true
   shell: zerotier-cli join {{ zerotier_network_id }}
+  # May fail during preseed
+  ignore_errors: true
 
-- name: Get zerotier address (1/2)
-  shell: "cat /var/lib/zerotier-one/identity.public | cut -d : -f 1"
-  register: zerotier_address
-
-- name: Get zerotier address (2/2)
-  debug:
-    msg: "ZeroTier address: {{ zerotier_address.stdout }}"
+- name: Add script to join zerotier network on boot
+  become: true
+  template:
+    src: templates/join-zerotier-network.j2
+    dest: /etc/init.d/join-zerotier-network
+    user: root
+    group: root
+    mode: u=rwx,g=rx,o=rx
