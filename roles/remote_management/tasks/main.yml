@@ -39,6 +39,8 @@
   service:
     name: ssh
     state: reloaded
+  # during preseed this may fail, ignore and continue
+  ignore_errors: yes
 
 - name: Enable NOPASSWD sudo access
   become: true
