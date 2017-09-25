@@ -1,3 +1,16 @@
+- name: Logout Play user
+  become: true
+  shell: skill -KILL -u play
+  when: clean_all_play_data
+
+- name: Cleanup
+  become: true
+  user:
+    name: play
+    state: absent
+    remove: yes
+  when: clean_all_play_data
+
 - name: Add play user
   become: true
   user:
@@ -26,6 +39,30 @@
     owner: play
     group: play
     mode: u+x
+
+- name: Ensure ~/.local/share/keyrings directory exists
+  become: true
+  file:
+    path: /home/play/.local/share/keyrings
+    owner: play
+    group: play
+    state: directory
+
+- name: Add default keyring to prevent gnome dialog (1/2)
+  become: true
+  template:
+    src: templates/keyrings/Default_keyring.keyring
+    dest: /home/play/.local/share/keyrings/Default_keyring.keyring
+    owner: play
+    group: play
+
+- name: Add default keyring to prevent gnome dialog (2/2)
+  become: true
+  template:
+    src: templates/keyrings/default
+    dest: /home/play/.local/share/keyrings/default
+    owner: play
+    group: play
 
 - name: Ensure ~/.config/autostart directory exists
   become: true
