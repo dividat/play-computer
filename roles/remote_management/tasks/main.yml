@@ -87,6 +87,6 @@
   template:
     src: templates/join-zerotier-network.j2
     dest: /etc/init.d/join-zerotier-network
-    user: root
+    owner: root
     group: root
     mode: u=rwx,g=rx,o=rx
