@@ -2,4 +2,4 @@
 
 dhcp
 
-chain --autofree http://boot.dividat.com/boot.ipxe
+chain --autofree http://boot.dividat.com/

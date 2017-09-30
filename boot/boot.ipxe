@@ -1,3 +1,30 @@
 #!ipxe
-####       boot.dividat.com initial loader        ####
+###################### boot.dividat.com #############################
+
+:start
+
+###################### MAIN MENU ####################################
+isset ${menu-default} || set menu-default install
+
+menu Setup computer for Dividat Play || goto shell
+item --gap --             ------------------------- Setup ------------------------------
+item install Remove USB stick and continue with setup. WARNING: THIS WILL DELETE ANY DATA ON HARD DRIVE!!!
+item --gap --             ------------------------- Other ------------------------------
+item shell Drop to iPXE shell
+item exit Exit iPXE and continue BIOS boot
+item reboot Reboot computer
+choose selected && goto ${selected}
+
+:reboot
+reboot
+
+:exit
+exit
+
+:shell
+echo Type 'exit' to get the back to the menu
+shell
+goto :start
+
+:install
 chain --autofree ubuntu/boot.ipxe
