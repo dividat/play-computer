@@ -76,26 +76,28 @@
   # May fail during preseed
   ignore_errors: true
 
-- name: Join zerotier network
+- name: Join ZeroTier network
   become: true
   shell: zerotier-cli join {{ zerotier_network_id }}
   # May fail during preseed
   ignore_errors: true
 
-- name: Add script to join zerotier network on boot (1/2)
+- name: Join ZeroTier network on reboot
   become: true
-  template:
-    src: templates/join-zerotier-network.j2
-    dest: /etc/init.d/join-zerotier-network
-    owner: root
-    group: root
-    mode: u=rwx,g=rx,o=rx
+  cron:
+    name: "join Dividat ZeroTier network"
+    special_time: reboot
+    state: present
+    job: /bin/sleep 30 ; /usr/sbin/zerotier-cli join {{ zerotier_network_id }}
 
-- name: Add script to join zerotier network on boot (2/2)
+- name: Remove init scripts to join ZeroTier network (deprecated by cron job at @reboot) (1/2)
   become: true
   file:
-    src: ../init.d/join-zerotier-network
-    dest: /etc/rc2.d/S99join-zerotier-network
-    state: link
-    owner: root
-    group: root
+    path: /etc/rc2.d/S99join-zerotier-network
+    state: absent
+
+- name: Remove init scripts to join ZeroTier network (deprecated by cron job at @reboot) (2/2)
+  become: true
+  file:
+    path: /etc/init.d/join-zerotier-network
+    state: absent
