@@ -1,0 +1,5 @@
+[Desktop Entry]
+Name=Clean
+Exec=sh -c 'sudo ansible-pull -U https://github.com/dividat/play-computer.git ubuntu.yml --extra-var "clean_all_play_data=true" -i localhost, --purge; read -p "Press Enter to close." WAIT_FOR_ENTER'
+Terminal=true
+Type=Application

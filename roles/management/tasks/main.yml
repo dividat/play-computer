@@ -3,7 +3,6 @@
   apt:
     name: openssh-server
 
-
 - name: Ensure user exists
   user:
     name: "{{ user }}"
@@ -16,7 +15,6 @@
     owner: "{{ user }}"
     group: "{{ user }}"
     state: directory
-
 
 - name: Install authorized_keys
   become: true
@@ -47,6 +45,25 @@
   lineinfile:
     dest: /etc/sudoers
     line: "{{ user }} ALL=(ALL) NOPASSWD: ALL"
+
+
+# Desktop shortcuts for admins
+
+- name: Add setup to Desktop
+  become: true
+  become_user: "{{ user }}"
+  template:
+    src: templates/setup.desktop
+    dest: /home/{{ user }}/Desktop/setup.desktop
+    mode: "u+x"
+
+- name: Add clean to Desktop
+  become: true
+  become_user: "{{ user }}"
+  template:
+    src: templates/clean.desktop
+    dest: /home/{{ user }}/Desktop/clean.desktop
+    mode: "u+x"
 
 
 # Zerotier-one
