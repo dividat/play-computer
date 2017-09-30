@@ -1,6 +1,6 @@
 - name: Logout Play user
   become: true
-  shell: skill -KILL -u play
+  shell: skill -KILL -u play && sleep 10
   when: clean_all_play_data
 
 - name: Cleanup
@@ -63,6 +63,22 @@
     dest: /home/play/.local/share/keyrings/default
     owner: play
     group: play
+
+- name: Simulate Chromium first run (1/2)
+  become: true
+  file:
+    path: /home/play/.config/chromium
+    owner: play
+    group: play
+    state: directory
+
+- name: Simulate Chromium first run (2/2)
+  become: true
+  file:
+    path: "/home/play/.config/chromium/First Run"
+    owner: play
+    group: play
+    state: touch
 
 - name: Ensure ~/.config/autostart directory exists
   become: true
