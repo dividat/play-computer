@@ -8,3 +8,10 @@
     upgrade: yes
     update_cache: yes
     cache_valid_time: 86400 #One day
+
+# This fixes issues that NetworkManager does not manage devices
+- name: Make Network Manager manage connections
+  become: true
+  file:
+    path: /etc/NetworkManager/conf.d/10-globally-managed-devices.conf
+    state: touch
