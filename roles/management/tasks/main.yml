@@ -135,6 +135,7 @@
     repo: https://github.com/dividat/play-computer.git
     dest: /home/{{ user }}/play-computer
     version: master
+    force: yes
 
 - name: Insall GraphicsMagick
   become: true
