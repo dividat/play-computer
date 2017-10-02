@@ -1,3 +1,11 @@
 user: "{{ ansible_env.USER }}"
 
 zerotier_network_id: a09acf02330ccc60
+
+# nvm
+nvm_dir: "/home/{{ user }}/.nvm"
+nvm: "{{ nvm_dir }}/nvm.sh"
+nvm_version: v0.33.4
+
+# node
+node_version: v8.5.0

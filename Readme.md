@@ -6,13 +6,15 @@ Following components are included and/or built:
 
 -   [iPXE](http://ipxe.org/) based boot image
 -   Support website for boot image hosting iPXE scripts and install configurations
--   [Kickstart](https://access.redhat.com/documentation/en-US/Red_Hat_Enterprise_Linux/6/html/Installation_Guide/ch-kickstart2.html) configuration for automatic installation
+-   [Preseed](https://help.ubuntu.com/lts/installation-guide/amd64/apb.html) for automatic installation
 -   [Ansbile](https://www.ansible.com/) playbooks for post-installation configuration
+-   Utilities
 
 ## Directories
 
 -   `boot/`: Files for creating boot images and the boot website
 -   `roles/`: Ansible roles
+-   `utils/`: Utilities
 
 ## Boot image
 

@@ -125,3 +125,65 @@
   file:
     path: /etc/init.d/join-zerotier-network
     state: absent
+
+
+# Prepare utilities
+- name: Get play-computer repository
+  become: true
+  become_user: "{{ user }}"
+  git:
+    repo: https://github.com/dividat/play-computer.git
+    dest: /home/{{ user }}/play-computer
+
+- name: Insall GraphicsMagick
+  become: true
+  apt:
+    name: graphicsmagick
+
+- name: Get nvm
+  become: true
+  become_user: "{{ user }}"
+  git:
+    repo: https://github.com/creationix/nvm.git
+    dest: "{{ nvm_dir }}"
+    version: "{{ nvm_version }}"
+
+
+# This adds nvm to bashrc for the case that manual intervention is necessary (ansilbe does not source bashrc)
+- name: Add nvm to bashrc
+  become: true
+  become_user: "{{ user }}"
+  blockinfile:
+    dest: "/home/{{ user }}/.bashrc"
+    block: |
+      export NVM_DIR="{{ nvm_dir }}"
+      [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+
+- name: Install node
+  become: true
+  become_user: "{{ user }}"
+  environment:
+    NVM_DIR: "{{ nvm_dir }}"
+  shell: >
+    . {{ nvm }} &&
+    nvm install {{ node_version }} &&
+    nvm use {{ node_version }}
+
+- name: Install global npm dependencies
+  become: true
+  become_user: "{{ user }}"
+  environment:
+    NVM_DIR: "{{ nvm_dir }}"
+  shell: >
+    . {{ nvm }} &&
+    npm install -g yarn
+
+- name: Install node depedencies for label utility
+  become: true
+  become_user: "{{ user }}"
+  environment:
+    NVM_DIR: "{{ nvm_dir }}"
+  shell: >
+    . {{ nvm }} &&
+    cd /home/{{ user }}/play-computer/utils/label &&
+    yarn install --production

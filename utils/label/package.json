@@ -1,0 +1,14 @@
+{
+  "name": "label",
+  "version": "1.0.0",
+  "description": "Print labels for installed Play computers",
+  "main": "index.js",
+  "repository": "https://github.com/dividat/play-computer",
+  "license": "BSD3",
+  "dependencies": {
+    "barcode": "^0.1.0",
+    "ipp": "^1.1.0",
+    "minimist": "^1.2.0",
+    "pdfkit": "^0.8.3"
+  }
+}

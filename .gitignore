@@ -1,4 +1,6 @@
 build/
 
+node_modules/
+
 # ansible retry files
 *.retry
