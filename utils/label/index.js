@@ -90,7 +90,7 @@ async function writeFile (file, data) {
   })
 }
 
-(async () => {
+async function main () {
   var argv = require('minimist')(process.argv.slice(2))
 
   const data = argv._[0] || 'What is my purpose?'
@@ -103,10 +103,23 @@ async function writeFile (file, data) {
 
   // const url = 'ipp://pinocchio.local:631/printers/DYMO_LabelWriter_450'
   if (argv.printer) {
-    await print(argv.printer, pdf)
+    const n = argv.n || 1
+    console.log('Printing ' + n + ' labels to ' + argv.printer + '...')
+
+    for (var i = 0; i < n; i++) {
+      await print(argv.printer, pdf)
+    }
   }
 
   if (argv.file) {
+    console.log('Writing pdf to ' + argv.file + '...')
     await writeFile(argv.file, pdf)
   }
-})()
+}
+
+main().catch((err) => {
+  console.error('ERROR!')
+  console.error(err)
+}).then(() => {
+  console.log('Done.')
+})

@@ -134,6 +134,7 @@
   git:
     repo: https://github.com/dividat/play-computer.git
     dest: /home/{{ user }}/play-computer
+    version: master
 
 - name: Insall GraphicsMagick
   become: true
@@ -187,3 +188,11 @@
     . {{ nvm }} &&
     cd /home/{{ user }}/play-computer/utils/label &&
     yarn install --production
+
+- name: Add "Print Labels" to Desktop
+  become: true
+  become_user: "{{ user }}"
+  template:
+    src: templates/print-labels.desktop.j2
+    dest: /home/{{ user }}/Desktop/print-labels.desktop
+    mode: "u+x"
