@@ -1,3 +1,0 @@
-[submodule "boot/ipxe"]
-	path = boot/ipxe
-	url = git://git.ipxe.org/ipxe.git

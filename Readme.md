@@ -4,9 +4,6 @@ This repo contains tools for setting up a computer for usage with Divdat Play.
 
 Following components are included and/or built:
 
--   [iPXE](http://ipxe.org/) based boot image
--   Support website for boot image hosting iPXE scripts and install configurations
--   [Preseed](https://help.ubuntu.com/lts/installation-guide/amd64/apb.html) for automatic installation
 -   [Ansbile](https://www.ansible.com/) playbooks for post-installation configuration
 -   Utilities
 

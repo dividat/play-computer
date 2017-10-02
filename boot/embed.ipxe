@@ -1,5 +1,0 @@
-#!ipxe
-
-dhcp
-
-chain --autofree http://boot.dividat.com/
