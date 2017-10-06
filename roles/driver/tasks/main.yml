@@ -86,3 +86,23 @@
   become: true
   shell: >
     env PATH=$PATH:{{ nvm_dir }}/versions/node/{{ node_version }}/bin {{ nvm_dir }}/versions/node/{{ node_version }}/lib/node_modules/pm2/bin/pm2 startup systemd -u {{ user }} --hp /home/{{ user }}
+
+- name: Setup Network Manager Connection for Senso (1/3) - Get connections
+  become: true
+  shell:
+    nmcli --fields NAME --terse --color no connection
+  register: network_manager_connections
+
+- name: Setup Network Manager Connection for Senso (2/3) - Add "Internet" connection
+  become: true
+  shell:
+    nmcli c add type ethernet con-name "Internet" ifname "*"
+  when:
+    network_manager_connections.stdout.find('Internet') < 0
+
+- name: Setup Network Manager Connection for Senso (3/3) - Add "Dividat Senso" link-local connection
+  become: true
+  shell:
+    nmcli c add type ethernet con-name "Dividat Senso" ipv4.method link-local ifname "*"
+  when:
+    network_manager_connections.stdout.find('Dividat Senso') < 0
