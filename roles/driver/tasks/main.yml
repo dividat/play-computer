@@ -87,22 +87,32 @@
   shell: >
     env PATH=$PATH:{{ nvm_dir }}/versions/node/{{ node_version }}/bin {{ nvm_dir }}/versions/node/{{ node_version }}/lib/node_modules/pm2/bin/pm2 startup systemd -u {{ user }} --hp /home/{{ user }}
 
-- name: Setup Network Manager Connection for Senso (1/3) - Get connections
+- name: Make sure ~/bin/ directory exists
   become: true
-  shell:
-    nmcli --fields NAME --terse --color no connection
-  register: network_manager_connections
+  become_user: "{{ user }}"
+  file:
+    path: /home/{{ user }}/bin/
+    state: directory
 
-- name: Setup Network Manager Connection for Senso (2/3) - Add "Internet" connection
+- name: Template script to setup Network Manager connections
   become: true
-  shell:
-    nmcli c add type ethernet con-name "Internet" ifname "*"
-  when:
-    network_manager_connections.stdout.find('Internet') < 0
+  become_user: "{{ user }}"
+  template:
+    src: templates/setup-nm-connections.sh
+    dest: /home/{{ user }}/bin/setup-nm-connections.sh
+    mode: "ugo+x"
 
-- name: Setup Network Manager Connection for Senso (3/3) - Add "Dividat Senso" link-local connection
+- name: Setup Network Manager connections
   become: true
   shell:
-    nmcli c add type ethernet con-name "Dividat Senso" ipv4.method link-local ifname "*"
-  when:
-    network_manager_connections.stdout.find('Dividat Senso') < 0
+    /bin/bash /home/{{ user }}/bin/setup-nm-connections.sh
+  # This will fail during installation
+  ignore_errors: true
+
+- name: Setup Network Manager connections on reboot
+  become: true
+  cron:
+    name: "setup Network Manager connections"
+    special_time: reboot
+    state: present
+    job: /bin/sleep 35 ; /home/{{ user }}/bin/setup-nm-connections.sh
