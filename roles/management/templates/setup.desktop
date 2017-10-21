@@ -1,5 +1,5 @@
 [Desktop Entry]
 Name=Setup
-Exec=sh -c 'sudo ansible-pull -U https://github.com/dividat/play-computer.git ubuntu.yml -i localhost, --purge; read -p "Press Enter to close." WAIT_FOR_ENTER'
+Exec=sh -c 'ansible-pull -U https://github.com/dividat/play-computer.git ubuntu.yml -i localhost, --purge; read -p "Press Enter to close." WAIT_FOR_ENTER'
 Terminal=true
 Type=Application
