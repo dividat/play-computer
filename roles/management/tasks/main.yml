@@ -209,3 +209,12 @@
     src: templates/print-labels.desktop.j2
     dest: /home/{{ user }}/Desktop/print-labels.desktop
     mode: "u+x"
+
+# This is to fix the case where anisble might have been run with sudo for the first time. This would have caused the ansible work direcotry (~/.ansible) to belong to root and make non-sudo invocations of ansible fail. Simply removing the directory and rerunning ansible without sudo fixes the issue.
+- name: Add "Fix ansible" to Desktop
+  become: true
+  become_user: "{{ user }}"
+  template:
+    src: templates/fix-ansible.desktop
+    dest: /home/{{ user }}/Desktop/fix-ansible.desktop
+    mode: "u+x"

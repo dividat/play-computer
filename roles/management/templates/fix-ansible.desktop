@@ -1,0 +1,5 @@
+[Desktop Entry]
+Name=Fix ansible
+Exec=sh -c 'sudo rm -r ~/.ansible; read -p "Press Enter to close." WAIT_FOR_ENTER'
+Terminal=true
+Type=Application

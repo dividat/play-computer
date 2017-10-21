@@ -10,14 +10,14 @@
     cache_valid_time: 86400 #One day
 
 # This fixes issues that NetworkManager does not manage devices
-- name: Make Network Manager manage connections (1/2)
+- name: Make Network Manager manage connections (1/3)
   become: true
   template:
     src: templates/NetworkManager.conf
     dest: /etc/NetworkManager/NetworkManager.conf
 
 # The network installer automatically  adds the primary network interface to network interfaces as auto. This will cause systemd to wait for device on booot (for 5 minutes!). By deleting all entries we set all devices in "hotplug" mode.
-- name: Make Network Manager manage connections (1/2)
+- name: Make Network Manager manage connections (2/3)
   become: true
   template:
     src: templates/interfaces
