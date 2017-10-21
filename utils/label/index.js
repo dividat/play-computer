@@ -98,8 +98,8 @@ async function main () {
   const data = argv._[0] || 'What is my purpose?'
   const extra = argv._[1] || ''
 
-  const fineText1 = argv._[2] || 'MAC1: 80:EE:73:D2:21:8A'
-  const fineText2 = argv._[3] || 'MAC2: 80:EE:73:D2:21:8B'
+  const fineText1 = argv._[2] || '' // 'MAC1: 80:EE:73:D2:21:8A'
+  const fineText2 = argv._[3] || '' // 'MAC2: 80:EE:73:D2:21:8B'
 
   const code = await createBarcode(data)
 
