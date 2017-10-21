@@ -4,7 +4,7 @@ const ipp = require('ipp')
 const fs = require('fs')
 const path = require('path')
 
-async function createPdf (barcode, fineText) {
+async function createPdf (barcode, text, fineText1, fineText2) {
   return new Promise((resolve, reject) => {
     // make a PDF document
     var doc = new PDFDocument({
@@ -22,13 +22,15 @@ async function createPdf (barcode, fineText) {
     })
 
     // draw pdf
-    doc.image(path.join(__dirname, 'logo-dividat-bw.jpg'), 60, 12, {width: 40})
-    doc.image(barcode, 5, 35, {width: 150, height: 20})
+    doc.image(path.join(__dirname, 'logo-dividat-bw.jpg'), 60, 10, {width: 40})
+    doc.image(barcode, 5, 25, {width: 150, height: 20})
 
     doc.font(path.join(__dirname, 'FiraSans-Light.ttf'))
        .fontSize(10)
 
-    doc.text(fineText, 11, 58, {width: 140, align: 'center'})
+    doc.text(text, 11, 48, {width: 140, align: 'center'})
+    doc.fontSize(8).text(fineText1, 11, 62, {width: 140, align: 'right'}).fontSize(9)
+    doc.fontSize(8).text(fineText2, 11, 72, {width: 140, align: 'right'}).fontSize(9)
 
     doc.end()
   })
@@ -96,10 +98,13 @@ async function main () {
   const data = argv._[0] || 'What is my purpose?'
   const extra = argv._[1] || ''
 
+  const fineText1 = argv._[2] || 'MAC1: 80:EE:73:D2:21:8A'
+  const fineText2 = argv._[3] || 'MAC2: 80:EE:73:D2:21:8B'
+
   const code = await createBarcode(data)
 
-  const fineText = extra ? data + '/' + extra : data
-  const pdf = await createPdf(code, fineText)
+  const text = extra ? data + '/' + extra : data
+  const pdf = await createPdf(code, text, fineText1, fineText2)
 
   // const url = 'ipp://pinocchio.local:631/printers/DYMO_LabelWriter_450'
   if (argv.printer) {

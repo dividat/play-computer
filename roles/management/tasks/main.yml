@@ -190,6 +190,18 @@
     cd /home/{{ user }}/play-computer/utils/label &&
     yarn install --production
 
+- name: Get MAC addresses of ethernet interfaces
+  set_fact:
+    ethernet_macaddresses: |
+          {% for iname in ansible_interfaces -%}
+            {% if hostvars[inventory_hostname]['ansible_%s' | format(iname)] is defined -%}
+              {% set interface = hostvars[inventory_hostname]['ansible_%s' | format(iname)]  -%}
+              {% if interface.type == "ether" and not interface.device.startswith('zt') -%}
+                {% if interface.macaddress is defined %}{{interface.device}}:{{ interface.macaddress }} {% endif %}
+              {%- endif %}
+            {%- endif %}
+          {%- endfor %}
+
 - name: Add "Print Labels" to Desktop
   become: true
   become_user: "{{ user }}"
