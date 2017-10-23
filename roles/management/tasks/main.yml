@@ -196,7 +196,7 @@
           {% for iname in ansible_interfaces -%}
             {% if hostvars[inventory_hostname]['ansible_%s' | format(iname)] is defined -%}
               {% set interface = hostvars[inventory_hostname]['ansible_%s' | format(iname)]  -%}
-              {% if interface.type == "ether" and not interface.device.startswith('zt') -%}
+              {% if interface.type == "ether" and interface.device.startswith('enp') -%}
                 {% if interface.macaddress is defined %}{{interface.device}}:{{ interface.macaddress }} {% endif %}
               {%- endif %}
             {%- endif %}
