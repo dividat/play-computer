@@ -30,6 +30,7 @@
     state: touch
 
 - name: Disable update manager
+  become: true
   apt:
     name: update-manager
     state: absent
