@@ -107,3 +107,12 @@
   template:
     src: templates/50-play-autologin.conf
     dest: /etc/lightdm/lightdm.conf.d/50-play-autologin.conf
+
+- name: Disable apport
+  become: true
+  systemd:
+    name: apport
+    state: stopped
+    enabled: no
+    masked: yes
+

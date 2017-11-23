@@ -28,3 +28,9 @@
   file:
     path: /etc/NetworkManager/conf.d/10-globally-managed-devices.conf
     state: touch
+
+- name: Disable update manager
+  apt:
+    name: update-manager
+    state: absent
+
