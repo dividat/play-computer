@@ -116,3 +116,9 @@
     special_time: reboot
     state: present
     job: /bin/sleep 35 ; /home/{{ user }}/bin/setup-nm-connections.sh
+
+- name: Add localhost.dividat.com to /etc/hosts
+  become: true
+  lineinfile:
+    path: /etc/hosts
+    line: '127.0.0.1 localhost.dividat.com'
