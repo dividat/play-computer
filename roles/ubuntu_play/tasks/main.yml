@@ -115,4 +115,6 @@
     state: stopped
     enabled: no
     masked: yes
+  # This may fail during setup as state is unknown
+  ignore_errors: true
 
