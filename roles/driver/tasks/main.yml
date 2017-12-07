@@ -120,5 +120,5 @@
 - name: Add localhost.dividat.com to /etc/hosts
   become: true
   lineinfile:
-    path: /etc/hosts
+    name: /etc/hosts
     line: '127.0.0.1 localhost.dividat.com'
