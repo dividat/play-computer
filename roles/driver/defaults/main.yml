@@ -1,6 +1,9 @@
 user: "{{ ansible_env.USER }}"
-version: master
 
+driver_channel: "develop"
+
+# Legacy (driver v0)
+version: master
 driver_dir: "/home/{{ user }}/driver"
 
 # nvm
