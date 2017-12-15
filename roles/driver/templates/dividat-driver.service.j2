@@ -1,0 +1,11 @@
+[Unit]
+Description=Dividat Driver
+
+[Service]
+Type=simple
+ExecStart=/home/{{ user }}/bin/dividat-driver
+User={{ user }}
+Group={{ user }}
+
+[Install]
+WantedBy=multi-user.target
