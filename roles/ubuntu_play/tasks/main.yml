@@ -11,6 +11,12 @@
     remove: yes
   when: clean_all_play_data
 
+- name: Add nopasswdlogin group
+  become: true
+  group:
+    name: nopasswdlogin
+    state: present
+
 - name: Add play user
   become: true
   user:
@@ -102,11 +108,27 @@
     path: /etc/lightdm/lightdm.conf.d
     state: directory
 
-- name: Enable auto login
+- name: Enable auto login in lightdm
   become: true
   template:
     src: templates/50-play-autologin.conf
     dest: /etc/lightdm/lightdm.conf.d/50-play-autologin.conf
+
+- name: Enable auto login in gdm
+  become: true
+  template:
+    src: templates/custom.conf
+    dest: /etc/gdm3/custom.conf
+  ignore_errors: true
+
+- name: Add PAM rule to allow passwordless login in GDM
+  become: true
+  lineinfile:
+    insertbefore: BOF
+    path: /etc/pam.d/gdm-password
+    line: auth sufficient pam_succeed_if.so user ingroup nopasswdlogin
+    state: present
+  ignore_errors: true
 
 - name: Disable apport
   become: true
