@@ -22,6 +22,7 @@
   user:
     name: play
     comment: "Dividat Play"
+    password: $6$Ev6hoX3w$RaWbeHNXmnir0l5yMfgGuItQ3WkQoR0LZnhVg6m4vJ461vrPpZG.ZORmmIr5BF6Qm6gVE8ADa8fOx3eBRMjUE1
     groups: nopasswdlogin
 
 - name: Install Chromium
