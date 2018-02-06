@@ -8,6 +8,7 @@
     upgrade: yes
     update_cache: yes
     cache_valid_time: 86400 #One day
+  ignore_errors: true
 
 # This fixes issues that NetworkManager does not manage devices
 - name: Make Network Manager manage connections (1/3)
