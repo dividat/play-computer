@@ -74,22 +74,14 @@
 
 
 # Zerotier-one
-
-- name: Add zerotier gpg key to apt
-  become: true
-  apt_key:
-    id: 23E52A61
-    url: https://www.zerotier.com/misc/contact@zerotier.com.gpg
-
-- name: Add zerotier apt repository
-  become: true
-  apt_repository:
-    repo: deb http://download.zerotier.com/debian/xenial xenial main
-
-- name: Install zerotier-one
+- name: Install curl
   become: true
   apt:
-    name: zerotier-one
+    name: curl
+
+- name: Install ZeroTier
+  become: true
+  shell: curl -s 'https://pgp.mit.edu/pks/lookup?op=get&search=0x1657198823E52A61' | gpg --import && if z=$(curl -s 'https://install.zerotier.com/' | gpg); then echo "$z" | sudo bash; fi
 
 - name: Enable and start zerotier service
   become: true
