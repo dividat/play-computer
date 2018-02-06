@@ -2,27 +2,26 @@
 
 This repo contains tools for setting up a computer for usage with Divdat Play.
 
-Following components are included and/or built:
-
--   [Ansbile](https://www.ansible.com/) playbooks for post-installation configuration
--   Utilities
-
 ## Directories
 
--   `boot/`: Files for creating boot images and the boot website
 -   `roles/`: Ansible roles
 -   `utils/`: Utilities
 
-## Boot image
+## Ansible playbook
 
-Build boot images, scripts and configurations for boot website:
+The Ansible playbook `ubuntu.yml` will configure a Ubuntu system to run Dividat Play.
 
-      make
+To run it:
+```
+ansible-playbook -i HOSTNAME, ubuntu.yml"
+```
 
-Deploy site to <http://boot.dividat.com/> ([AWS CLI](https://aws.amazon.com/cli/) required):
+You may also define the URL of the Play installation (useful for testing out development version at `dev.dividat.com`):
+```
+ansible-playbook -i HOSTNAME, ubuntu.yml --extra-vars "play_url=https://dev.dividat.com/play.html"
+```
 
-      make deploy
-
-## Ansible playbooks
-
--   `ubuntu.yml`: Configure a Ubuntu system to run Dividat Play.
+If you are on the Ubuntu machine that should be set up for usage with Play you might want to pull the ansible playbook instead:
+```
+anisble-pull -U https://github.com/dividat/play-computer.git ubuntu.yml -i localhost, --purge
+```
