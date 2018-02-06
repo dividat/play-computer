@@ -15,7 +15,7 @@ sed -i 's/"exit_type":"Crashed"/"exit_type":"None"/' ~/.config/chromium/Default/
 # start chromium in kiosk mode...for ever. ever. ever, ever ever?
 while true
 do
-  chromium-browser --disable-infobars --kiosk https://play.dividat.com/
+  chromium-browser --disable-infobars --kiosk {{ play_url }}
 done
 
 # I'm sorry miss Jackson. I am for real...

@@ -41,7 +41,7 @@
 - name: Add play-kiosk script
   become: true
   template:
-    src: templates/play-kiosk.sh
+    src: templates/play-kiosk.sh.j2
     dest: /home/play/bin/play-kiosk.sh
     owner: play
     group: play

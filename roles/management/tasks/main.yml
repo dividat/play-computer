@@ -64,6 +64,14 @@
     dest: /home/{{ user }}/Desktop/setup.desktop
     mode: "u+x"
 
+- name: Add setup (dev) to Desktop
+  become: true
+  become_user: "{{ user }}"
+  template:
+    src: templates/setup-dev.desktop
+    dest: /home/{{ user }}/Desktop/setup-dev.desktop
+    mode: "u+x"
+
 - name: Add clean to Desktop
   become: true
   become_user: "{{ user }}"
