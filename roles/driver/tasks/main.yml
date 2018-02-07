@@ -57,7 +57,7 @@
   become: true
   systemd:
     name: dividat-driver
-    state: started
+    state: restarted
     enabled: true
 
 - name: Template script to setup Network Manager connections
