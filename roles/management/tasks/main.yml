@@ -82,15 +82,22 @@
 
 
 # Zerotier-one
-- name: Install curl
+
+- name: Add zerotier gpg key to apt
+  become: true
+  apt_key:
+    id: 23E52A61
+    url: https://www.zerotier.com/misc/contact@zerotier.com.gpg
+
+- name: Add zerotier apt repository
+  become: true
+  apt_repository:
+    repo: deb http://download.zerotier.com/debian/zesty zesty main
+
+- name: Install zerotier-one
   become: true
   apt:
-    name: curl
-
-- name: Install ZeroTier
-  become: true
-  shell: curl -s https://install.zerotier.com/ | sudo bash
-  ignore_errors: true
+    name: zerotier-one
 
 - name: Enable and start zerotier service
   become: true
