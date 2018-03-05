@@ -33,6 +33,11 @@
     path: /home/{{ user }}/bin/
     state: directory
 
+- name: Install curl
+  become: true
+  apt:
+    name: curl
+
 - name: Get latest version of driver
   become: true
   become_user: "{{ user }}"
