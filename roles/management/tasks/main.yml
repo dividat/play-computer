@@ -149,6 +149,7 @@
   become: true
   apt:
     name: graphicsmagick
+  ignore_errors: true
 
 - name: Get nvm
   become: true
