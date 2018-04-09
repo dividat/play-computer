@@ -1,91 +1,30 @@
-- name: Install git
-  become: true
-  apt:
-    name: git
-
 - name: Ensure user exists
   user:
     name: "{{ user }}"
 
-- name: Get nvm
+- name: Stop PM2 process
   become: true
   become_user: "{{ user }}"
-  git:
-    repo: https://github.com/creationix/nvm.git
-    dest: "{{ nvm_dir }}"
-    version: "{{ nvm_version }}"
+  command: pm2 stop all
+  ignore_errors: yes
 
-
-# This adds nvm to bashrc for the case that manual intervention is necessary (ansilbe does not source bashrc)
-- name: Add nvm to bashrc
+- name: Delete PM2 processes
   become: true
   become_user: "{{ user }}"
-  blockinfile:
-    dest: "/home/{{ user }}/.bashrc"
-    block: |
-      export NVM_DIR="{{ nvm_dir }}"
-      [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+  command: pm2 delete all
+  ignore_errors: yes
 
-
-- name: Install node
-  become: true
-  become_user: "{{ user }}"
-  environment:
-    NVM_DIR: "{{ nvm_dir }}"
-  shell: >
-    . {{ nvm }} &&
-    nvm install {{ node_version }} &&
-    nvm use {{ node_version }}
-
-- name: Install global npm dependencies
-  become: true
-  become_user: "{{ user }}"
-  environment:
-    NVM_DIR: "{{ nvm_dir }}"
-  shell: >
-    . {{ nvm }} &&
-    npm install -g yarn pm2
-
-- name: Get driver
-  become: true
-  become_user: "{{ user }}"
-  git:
-    repo: https://github.com/dividat/driver.git
-    dest: "{{ driver_dir }}"
-    version: "{{ version }}"
-
-# TODO: fix bug in dependencies that makes yarn fail without running `npm install` first
-- name: Install driver dependencies
-  become: true
-  become_user: "{{ user }}"
-  environment:
-    NVM_DIR: "{{ nvm_dir }}"
-  shell: >
-    . {{ nvm }} &&
-    cd {{ driver_dir }} &&
-    npm install --production
-
-- name: Create pm2 process file
-  become: true
-  become_user: "{{ user }}"
-  template:
-    src: templates/config.js.j2
-    dest: "{{ driver_dir }}/pm2.config.js"
-
-- name: Start or reload process
-  become: true
-  become_user: "{{ user }}"
-  environment:
-    NVM_DIR: "{{ nvm_dir }}"
-  shell: >
-    . {{ nvm }} &&
-    pm2 startOrReload {{ driver_dir }}/pm2.config.js &&
-    pm2 save
-
-- name: pm2 startup
+- name: pm2 unstartup
   become: true
   shell: >
-    env PATH=$PATH:{{ nvm_dir }}/versions/node/{{ node_version }}/bin {{ nvm_dir }}/versions/node/{{ node_version }}/lib/node_modules/pm2/bin/pm2 startup systemd -u {{ user }} --hp /home/{{ user }}
+    env PATH=$PATH:{{ nvm_dir }}/versions/node/{{ node_version }}/bin {{ nvm_dir }}/versions/node/{{ node_version }}/lib/node_modules/pm2/bin/pm2 unstartup systemd -u {{ user }} --hp /home/{{ user }}
+  ignore_errors: yes
+
+- name: Remove driver directory
+  become: true
+  file:
+    path: "{{ driver_dir }}"
+    state: absent
 
 - name: Make sure ~/bin/ directory exists
   become: true
@@ -93,6 +32,39 @@
   file:
     path: /home/{{ user }}/bin/
     state: directory
+
+- name: Install curl
+  become: true
+  apt:
+    name: curl
+
+- name: Get latest version of driver
+  become: true
+  become_user: "{{ user }}"
+  command: curl https://dist.dividat.com/releases/driver2/{{ driver_channel }}/latest
+  register: driver_latest_version
+
+- name: Download driver
+  become: true
+  become_user: "{{ user }}"
+  get_url:
+    url: https://dist.dividat.com/releases/driver2/{{ driver_channel }}/{{ driver_latest_version.stdout }}/dividat-driver-linux-amd64-{{ driver_latest_version.stdout }}
+    dest: /home/{{ user }}/bin/dividat-driver
+    force: yes
+    mode: u+x
+
+- name: Template systemd unit file
+  become: true
+  template:
+    src: templates/dividat-driver.service.j2
+    dest: /etc/systemd/system/dividat-driver.service
+
+- name: Enable and start dividat-driver
+  become: true
+  systemd:
+    name: dividat-driver
+    state: restarted
+    enabled: true
 
 - name: Template script to setup Network Manager connections
   become: true
