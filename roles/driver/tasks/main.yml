@@ -50,6 +50,7 @@
   get_url:
     url: https://dist.dividat.com/releases/driver2/{{ driver_channel }}/{{ driver_latest_version.stdout }}/dividat-driver-linux-amd64-{{ driver_latest_version.stdout }}
     dest: /home/{{ user }}/bin/dividat-driver
+    force: yes
     mode: u+x
 
 - name: Template systemd unit file
