@@ -1,3 +1,80 @@
+- name: Remove zesty repositories
+  become: true
+  apt_repository: 
+    repo: deb http://ubuntu.ethz.ch/ubuntu/ zesty main restricted
+    state: absent
+    update_cache: no
+
+- name: Remove zesty repositories
+  become: true
+  apt_repository: 
+    repo: deb http://ubuntu.ethz.ch/ubuntu/ zesty-updates main restricted
+    state: absent
+    update_cache: no
+
+- name: Remove zesty repositories
+  become: true
+  apt_repository: 
+    repo: deb http://ubuntu.ethz.ch/ubuntu/ zesty universe
+    state: absent
+    update_cache: no
+
+- name: Remove zesty repositories
+  become: true
+  apt_repository: 
+    repo: deb http://ubuntu.ethz.ch/ubuntu/ zesty-updates universe
+    state: absent
+    update_cache: no
+
+- name: Remove zesty repositories
+  become: true
+  apt_repository: 
+    repo: deb http://ubuntu.ethz.ch/ubuntu/ zesty multiverse 
+    state: absent
+    update_cache: no
+
+- name: Remove zesty repositories
+  become: true
+  apt_repository: 
+    repo: deb http://ubuntu.ethz.ch/ubuntu/ zesty-updates multiverse
+    state: absent
+    update_cache: no
+
+- name: Remove zesty repositories
+  become: true
+  apt_repository: 
+    repo: deb http://ubuntu.ethz.ch/ubuntu/ zesty-backports main restricted universe multiverse
+    state: absent
+    update_cache: no
+
+- name: Remove zesty repositories
+  become: true
+  apt_repository: 
+    repo: deb http://ubuntu.ethz.ch/ubuntu/ zesty-backports main restricted universe multiverse
+    state: absent
+    update_cache: no
+
+- name: Remove zesty repositories
+  become: true
+  apt_repository: 
+    repo: deb http://ubuntu.ethz.ch/ubuntu/ zesty-security main restricted
+    state: absent
+    update_cache: no
+
+- name: Remove zesty repositories
+  become: true
+  apt_repository: 
+    repo: deb http://ubuntu.ethz.ch/ubuntu/ zesty-security universe
+    state: absent
+    update_cache: no
+
+- name: Remove zesty repositories
+  become: true
+  apt_repository: 
+    repo: deb http://ubuntu.ethz.ch/ubuntu/ zesty-security multiverse
+    state: absent
+    update_cache: yes
+
 - name: "Install aptitude"
   raw: apt-get install -y aptitude
   become: true
