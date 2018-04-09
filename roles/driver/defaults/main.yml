@@ -1,6 +1,6 @@
 user: "{{ ansible_env.USER }}"
 
-driver_channel: "develop"
+driver_channel: "master"
 
 # Legacy (driver v0)
 version: master
