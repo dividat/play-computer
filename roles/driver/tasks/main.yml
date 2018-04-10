@@ -65,6 +65,8 @@
     name: dividat-driver
     state: restarted
     enabled: true
+  # May fail during preseed
+  ignore_errors: true
 
 - name: Template script to setup Network Manager connections
   become: true
