@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Exec=/home/lab/bin/lab-kiosk.sh
+Hidden=false
+NoDisplay=false
+X-GNOME-Autostart-enabled=true
+Name=Dividat Lab
+Comment=
