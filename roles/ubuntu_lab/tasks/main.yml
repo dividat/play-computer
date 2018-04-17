@@ -24,6 +24,11 @@
   apt:
     name: chromium-browser
 
+- name: Install at(1)
+  become: true
+  apt:
+    name: at
+
 - name: Ensure ~/bin directory exists
   become: true
   file:
