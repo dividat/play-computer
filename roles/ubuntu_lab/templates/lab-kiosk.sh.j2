@@ -1,0 +1,32 @@
+#!/bin/sh
+
+# schedule a warning dialog and automatic logout of the current user
+LOGOUT_AT=15
+WARN_AHEAD=2
+WARN_AT=$(expr $LOGOUT_AT - $WARN_AHEAD)
+at now + "$WARN_AT" minute <<!
+zenity --info --title="Dividat Lab" --text "Your lab session ends in <b>$WARN_AHEAD</b> minutes.\n\nLab sessions expire after $LOGOUT_AT minutes to avoid confusion with <i>Dividat Play</i>.\nPlease log into the lab account again if you want to continue using an experimental feature." 2> /dev/null
+!
+at now + "$LOGOUT_AT" minute <<!
+gnome-session-quit --logout --no-prompt
+!
+
+# disable power saving, screensaver and screen dimming
+gsettings set org.gnome.settings-daemon.plugins.power idle-dim false
+gsettings set org.gnome.settings-daemon.plugins.power sleep-inactive-ac-timeout 0
+gsettings set org.gnome.desktop.screensaver lock-enabled false
+gsettings set org.gnome.desktop.screensaver logout-enabled false
+gsettings set org.gnome.desktop.screensaver ubuntu-lock-on-suspend false
+gsettings set org.gnome.desktop.session idle-delay 0
+
+# force chromium to think it exited cleanly
+sed -i 's/"exited_cleanly":false/"exited_cleanly":true/' ~/.config/chromium/Default/Preferences
+sed -i 's/"exit_type":"Crashed"/"exit_type":"None"/' ~/.config/chromium/Default/Preferences
+
+# start chromium in kiosk mode...for ever. ever. ever, ever ever?
+while true
+do
+  chromium-browser --disable-infobars --kiosk {{ lab_url }}
+done
+
+# I apologize a trillion times

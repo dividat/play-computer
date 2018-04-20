@@ -1,0 +1,112 @@
+- name: Logout Lab user
+  become: true
+  shell: skill -KILL -u lab && sleep 10
+  when: clean_all_lab_data
+
+- name: Cleanup
+  become: true
+  user:
+    name: lab
+    state: absent
+    remove: yes
+  when: clean_all_lab_data
+
+- name: Add lab user
+  become: true
+  user:
+    name: lab
+    comment: "Lab"
+    password: $6$W/iGZ9dCDPAJ$KhGub27hnHTbO7wqLTqRMVrvYN/Kr5chD.RJ4VCUzL5TTJ/WimyopWlZKGCZRr9UU6Oy740cYsiuD0Ce3349F0
+
+- name: Install Chromium
+  become: true
+  apt:
+    name: chromium-browser
+
+- name: Install at(1)
+  become: true
+  apt:
+    name: at
+
+- name: Ensure ~/bin directory exists
+  become: true
+  file:
+    path: /home/lab/bin/
+    owner: lab
+    group: lab
+    state: directory
+
+- name: Add lab-kiosk script
+  become: true
+  template:
+    src: templates/lab-kiosk.sh.j2
+    dest: /home/lab/bin/lab-kiosk.sh
+    owner: lab
+    group: lab
+    mode: u+x
+
+- name: Ensure ~/.local/share/keyrings directory exists
+  become: true
+  file:
+    path: /home/lab/.local/share/keyrings
+    owner: lab
+    group: lab
+    state: directory
+
+- name: Add default keyring to prevent gnome dialog (1/2)
+  become: true
+  template:
+    src: templates/keyrings/Default_keyring.keyring
+    dest: /home/lab/.local/share/keyrings/Default_keyring.keyring
+    owner: lab
+    group: lab
+
+- name: Add default keyring to prevent gnome dialog (2/2)
+  become: true
+  template:
+    src: templates/keyrings/default
+    dest: /home/lab/.local/share/keyrings/default
+    owner: lab
+    group: lab
+
+- name: Simulate Chromium first run (1/2)
+  become: true
+  file:
+    path: /home/lab/.config/chromium
+    owner: lab
+    group: lab
+    state: directory
+
+- name: Simulate Chromium first run (2/2)
+  become: true
+  file:
+    path: "/home/lab/.config/chromium/First Run"
+    owner: lab
+    group: lab
+    state: touch
+
+- name: Ensure ~/.config/autostart directory exists
+  become: true
+  file:
+    path: /home/lab/.config/autostart
+    owner: lab
+    group: lab
+    state: directory
+
+- name: Autostart lab-kiosk
+  become: true
+  template:
+    src: templates/lab-kiosk.desktop
+    dest: /home/lab/.config/autostart/lab-kiosk.desktop
+    owner: lab
+    group: lab
+
+- name: Disable apport
+  become: true
+  systemd:
+    name: apport
+    state: stopped
+    enabled: no
+    masked: yes
+  # This may fail during setup as state is unknown
+  ignore_errors: true
