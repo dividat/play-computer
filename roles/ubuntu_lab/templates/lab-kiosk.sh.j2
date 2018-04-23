@@ -4,10 +4,10 @@
 LOGOUT_AT=15
 WARN_AHEAD=2
 WARN_AT=$(expr $LOGOUT_AT - $WARN_AHEAD)
-at now + "$WARN_AT" minute <<!
+command -v at >/dev/null 2>&1 && at now + "$WARN_AT" minute <<!
 zenity --info --title="Dividat Lab" --text "Your lab session ends in <b>$WARN_AHEAD</b> minutes.\n\nLab sessions expire after $LOGOUT_AT minutes to avoid confusion with <i>Dividat Play</i>.\nPlease log into the lab account again if you want to continue using an experimental feature." 2> /dev/null
 !
-at now + "$LOGOUT_AT" minute <<!
+command -v at >/dev/null 2>&1 && at now + "$LOGOUT_AT" minute <<!
 gnome-session-quit --logout --no-prompt
 !
 
