@@ -23,5 +23,5 @@ ansible-playbook -i HOSTNAME, ubuntu.yml --extra-vars "play_url=https://dev.divi
 
 If you are on the Ubuntu machine that should be set up for usage with Play you might want to pull the ansible playbook instead:
 ```
-anisble-pull -U https://github.com/dividat/play-computer.git ubuntu.yml -i localhost, --purge
+ansible-pull -U https://github.com/dividat/play-computer.git ubuntu.yml -i localhost, --purge
 ```
