@@ -24,7 +24,6 @@
   become: true
   apt:
     name: pcscd
-  ignore_errors: yes
 
 - name: Enable and start pcscd service
   become: true
@@ -32,7 +31,7 @@
     name: pcscd
     state: restarted
     enabled: true
-  # May fail on 17.04
+  # May fail during preseed
   ignore_errors: true
 
 - name: Remove driver directory

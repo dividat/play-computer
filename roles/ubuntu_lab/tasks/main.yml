@@ -27,7 +27,6 @@
   become: true
   apt:
     name: at
-  ignore_errors: true
 
 - name: Ensure ~/bin directory exists
   become: true
