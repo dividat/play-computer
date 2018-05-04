@@ -1,79 +1,33 @@
-- name: Remove zesty repositories
+- name: Remove deprecated zesty repositories
   become: true
-  apt_repository: 
-    repo: deb http://ubuntu.ethz.ch/ubuntu/ zesty main restricted
+  apt_repository:
+    repo: "{{ item }}"
     state: absent
     update_cache: no
+  with_items:
+    - "deb http://ubuntu.ethz.ch/ubuntu/ zesty-security universe"
+    - "deb http://ubuntu.ethz.ch/ubuntu/ zesty-security multiverse"
+    - "deb http://ubuntu.ethz.ch/ubuntu/ zesty main restricted"
+    - "deb http://ubuntu.ethz.ch/ubuntu/ zesty-updates main restricted"
+    - "deb http://ubuntu.ethz.ch/ubuntu/ zesty universe"
+    - "deb http://ubuntu.ethz.ch/ubuntu/ zesty-updates universe"
+    - "deb http://ubuntu.ethz.ch/ubuntu/ zesty multiverse"
+    - "deb http://ubuntu.ethz.ch/ubuntu/ zesty-updates multiverse"
+    - "deb http://ubuntu.ethz.ch/ubuntu/ zesty-backports main restricted universe multiverse"
+    - "deb http://ubuntu.ethz.ch/ubuntu/ zesty-backports main restricted universe multiverse"
+    - "deb http://ubuntu.ethz.ch/ubuntu/ zesty-security main restricted"
 
-- name: Remove zesty repositories
+- name: Add legacy zesty repositories
+  when: ansible_distribution_version == '17.04'
   become: true
-  apt_repository: 
-    repo: deb http://ubuntu.ethz.ch/ubuntu/ zesty-updates main restricted
-    state: absent
+  apt_repository:
+    repo: "{{ item }}"
+    state: present
     update_cache: no
-
-- name: Remove zesty repositories
-  become: true
-  apt_repository: 
-    repo: deb http://ubuntu.ethz.ch/ubuntu/ zesty universe
-    state: absent
-    update_cache: no
-
-- name: Remove zesty repositories
-  become: true
-  apt_repository: 
-    repo: deb http://ubuntu.ethz.ch/ubuntu/ zesty-updates universe
-    state: absent
-    update_cache: no
-
-- name: Remove zesty repositories
-  become: true
-  apt_repository: 
-    repo: deb http://ubuntu.ethz.ch/ubuntu/ zesty multiverse 
-    state: absent
-    update_cache: no
-
-- name: Remove zesty repositories
-  become: true
-  apt_repository: 
-    repo: deb http://ubuntu.ethz.ch/ubuntu/ zesty-updates multiverse
-    state: absent
-    update_cache: no
-
-- name: Remove zesty repositories
-  become: true
-  apt_repository: 
-    repo: deb http://ubuntu.ethz.ch/ubuntu/ zesty-backports main restricted universe multiverse
-    state: absent
-    update_cache: no
-
-- name: Remove zesty repositories
-  become: true
-  apt_repository: 
-    repo: deb http://ubuntu.ethz.ch/ubuntu/ zesty-backports main restricted universe multiverse
-    state: absent
-    update_cache: no
-
-- name: Remove zesty repositories
-  become: true
-  apt_repository: 
-    repo: deb http://ubuntu.ethz.ch/ubuntu/ zesty-security main restricted
-    state: absent
-    update_cache: no
-
-- name: Remove zesty repositories
-  become: true
-  apt_repository: 
-    repo: deb http://ubuntu.ethz.ch/ubuntu/ zesty-security universe
-    state: absent
-    update_cache: no
-
-- name: Remove zesty repositories
-  become: true
-  apt_repository: 
-    repo: deb http://ubuntu.ethz.ch/ubuntu/ zesty-security multiverse
-    state: absent
-    update_cache: yes
+  with_items:
+    - "deb http://old-releases.ubuntu.com/ubuntu/ zesty main restricted universe multiverse"
+    - "deb http://old-releases.ubuntu.com/ubuntu/ zesty-updates main restricted universe multiverse"
+    - "deb http://old-releases.ubuntu.com/ubuntu/ zesty-security main restricted universe multiverse"
 
 - name: "Install aptitude"
   raw: apt-get install -y aptitude
@@ -112,4 +66,3 @@
   apt:
     name: update-manager
     state: absent
-
