@@ -92,7 +92,7 @@
 - name: Add zerotier apt repository
   become: true
   apt_repository:
-    repo: deb http://download.zerotier.com/debian/zesty zesty main
+    repo: deb http://download.zerotier.com/debian/artful artful main
 
 - name: Install zerotier-one
   become: true
