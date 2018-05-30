@@ -1,5 +1,5 @@
 [Desktop Entry]
 Name=Print Labels
-Exec=bash -c '. {{ nvm }}; node play-computer/utils/label -n 2 --printer {{ printer_url }} `cat /var/lib/zerotier-one/identity.public | cut -d : -f 1` {{ zerotier_network_id }} {{ ethernet_macaddresses | trim }}; read -p "Press Enter to close." WAIT_FOR_ENTER'
+Exec=bash -c '. {{ nvm }}; node play-computer/utils/label -n 3 --printer {{ printer_url }} `cat /var/lib/zerotier-one/identity.public | cut -d : -f 1` {{ zerotier_network_id }} {{ ethernet_macaddresses | trim }}; read -p "Press Enter to close." WAIT_FOR_ENTER'
 Terminal=true
 Type=Application
