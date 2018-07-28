@@ -1,0 +1,13 @@
+diff --git a/src/drivers/net/etherfabric.c b/src/drivers/net/etherfabric.c
+index 2cd41d4cab51..fa696694639a 100644
+--- a/src/drivers/net/etherfabric.c
++++ b/src/drivers/net/etherfabric.c
+@@ -2210,7 +2210,7 @@ falcon_reset_xaui ( struct efab_nic *efab )
+ static int
+ falcon_xaui_link_ok ( struct efab_nic *efab )
+ {
+-	efab_dword_t reg;
++	efab_dword_t reg = { 0 };
+ 	int align_done, lane_status, sync;
+ 	int has_phyxs;
+ 	int link_ok = 1;
