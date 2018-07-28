@@ -20,6 +20,7 @@ stdenv.mkDerivation {
   patches = [
     ./init-reg.diff
     ./download-proto-https.diff
+    ./makefile-echo.diff
   ];
 
   buildPhase = ''
