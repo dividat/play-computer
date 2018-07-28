@@ -6,6 +6,7 @@ This repo contains tools for setting up a computer for usage with Divdat Play.
 
 -   `roles/`: Ansible roles
 -   `utils/`: Utilities
+-   `installer/`: Bootable installer
 
 ## Ansible playbook
 

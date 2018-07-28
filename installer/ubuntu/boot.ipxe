@@ -1,0 +1,23 @@
+#!ipxe
+
+
+set ubuntu_version artful
+set arch amd64
+set ubuntu_mirror ch.archive.ubuntu.com
+
+#set kickstart_config http://boot.dividat.com/ubuntu/ks.cfg
+#set params ks=${kickstart_config}
+
+set install_params auto=true priority=critical locale=en_US keyboard-configuration/layoutcode=us preseed/url=http://boot.dividat.com/ubuntu/preseed.cfg preseed/interactive=false
+
+set dir ubuntu/dists/${ubuntu_version}/main/installer-${arch}/current/images/netboot/ubuntu-installer/${arch}
+
+echo Loading Ubuntu ${ubuntu_version} ${arch}
+kernel http://${ubuntu_mirror}/${dir}/linux ${install_params} ${netcfg} ${mirrorcfg} ${console} -- quiet ${params} initrd=initrd.gz || goto error
+initrd http://${ubuntu_mirror}/${dir}/initrd.gz || goto error
+
+boot
+
+:error
+echo "Error! Starting shell."
+shell
