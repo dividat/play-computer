@@ -10,9 +10,9 @@ The built artifacts are:
 -   `boot.ipxe`: An iPXE script
 -   `ubuntu/`: Ubuntu specific iPXE script and preseed configuration
 
-The bootable USB image is based on [iPXE](http://ipxe.org/) with an [embeded script](./ipxe/embed.ipxe) that will load the script at <http://boot.dividat.com>.
+The bootable USB image is based on [iPXE](http://ipxe.org/) with an [embeded script](./ipxe/embed.ipxe) that will load the script at <https://boot.dividat.com>.
 
-The script <boot.ipxe> is deployed to <http://boot.dividat.com> and will present a menu and ask for confirmation to continue with installation. Installation continues by loading the script <ubuntu/boot.ipxe>.
+The script <boot.ipxe> is deployed to <https://boot.dividat.com> and will present a menu and ask for confirmation to continue with installation. Installation continues by loading the script <ubuntu/boot.ipxe>.
 
 The script <ubunut/boot.ipxe> downloads and starts an Ubuntu installer with [preseed](https://help.ubuntu.com/lts/installation-guide/s390x/apb.html) configuration set up properly (see <ubuntu/preseed.cfg>).
 
