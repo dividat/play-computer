@@ -90,9 +90,22 @@
     url: https://www.zerotier.com/misc/contact@zerotier.com.gpg
 
 - name: Add zerotier apt repository
+  when: ansible_distribution_version == '17.04'
+  become: true
+  apt_repository:
+    repo: deb http://download.zerotier.com/debian/zesty zesty main
+
+- name: Add zerotier apt repository
+  when: ansible_distribution_version == '17.10'
   become: true
   apt_repository:
     repo: deb http://download.zerotier.com/debian/artful artful main
+
+- name: Add zerotier apt repository
+  when: ansible_distribution_version == '18.04'
+  become: true
+  apt_repository:
+    repo: deb http://download.zerotier.com/debian/bionic bionic main
 
 - name: Install zerotier-one
   become: true
