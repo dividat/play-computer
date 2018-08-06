@@ -61,6 +61,12 @@
     path: /etc/NetworkManager/conf.d/10-globally-managed-devices.conf
     state: touch
 
+- name: Disable welcome screen
+  become: true
+  apt:
+    name: gnome-initial-setup
+    state: absent
+
 - name: Disable update manager
   become: true
   apt:
