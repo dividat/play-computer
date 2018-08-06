@@ -37,6 +37,14 @@ The [preseed configuration](ubuntu/preseed.cfg) will run `ansible-pull` to set u
 
 `nix-shell --command 'make deploy'`
 
+### Flashing
+
+-   The USB image can be written directly to a drive:
+
+    `cat build/installer.usb | sudo tee /dev/sdX`
+
+    Take care to identify that `sdX` is the right disk, as all previous contents will be removed.
+
 ### Caveats
 
 -   The iPXE image is built by Nix as a buildInput to this derivation. If you start a `nix-shell`, make changes to the `ipxe/` folder and run `make` the changes in the `ipxe/` folder will not be picked up. This can be fixed by some Makefile hacking. An easy way out: restart your `nix-shell`. A nicer way: build using `nix-build -o build`. A subsequent `make deploy` will work as `awscli` follows symlinks.
