@@ -1,7 +1,7 @@
 #!ipxe
 
 
-set ubuntu_version bionic
+set ubuntu_version artful
 set arch amd64
 set ubuntu_mirror ch.archive.ubuntu.com
 
