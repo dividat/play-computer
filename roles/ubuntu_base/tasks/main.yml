@@ -33,6 +33,11 @@
   raw: apt-get install -y aptitude
   become: true
 
+- name: "Update cache"
+  raw: apt-get update
+  become: true
+  ignore_errors: true
+
 - name: Upgrade packages
   become: true
   apt:
