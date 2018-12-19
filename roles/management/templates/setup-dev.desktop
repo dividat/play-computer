@@ -1,5 +1,5 @@
 [Desktop Entry]
-Name=Setup (dev)
+Name=Reconfigure for dev.dividat.com
 Exec=sh -c 'ansible-pull -U https://github.com/dividat/play-computer.git ubuntu.yml --extra-var "play_url=https://dev.dividat.com/play.html" --extra-var "driver_channel=develop" -i localhost, --purge; read -p "Press Enter to close." WAIT_FOR_ENTER'
 Terminal=true
 Type=Application
