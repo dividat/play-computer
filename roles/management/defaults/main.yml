@@ -3,7 +3,7 @@ user: "{{ ansible_env.USER }}"
 zerotier_network_id: a09acf02330ccc60
 
 # for printing labels we need a accessible ipp url
-printer_url: ipp://pinocchio.local:631/printers/DYMO_LabelWriter_450
+printer_url: ipp://max.local:631/printers/DYMO_LabelWriter_450
 
 # nvm
 nvm_dir: "/home/{{ user }}/.nvm"
