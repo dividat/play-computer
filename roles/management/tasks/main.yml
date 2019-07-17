@@ -101,6 +101,7 @@
   become: true
   apt_repository:
     repo: deb http://download.zerotier.com/debian/artful artful main
+  ignore_errors: true
 
 - name: Add zerotier apt repository
   when: ansible_distribution_version == '18.04'

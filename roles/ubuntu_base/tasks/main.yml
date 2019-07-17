@@ -29,6 +29,18 @@
     - "deb http://old-releases.ubuntu.com/ubuntu/ zesty-updates main restricted universe multiverse"
     - "deb http://old-releases.ubuntu.com/ubuntu/ zesty-security main restricted universe multiverse"
 
+- name: Add legacy artful repositories
+  when: ansible_distribution_version == '17.10'
+  become: true
+  apt_repository:
+    repo: "{{ item }}"
+    state: present
+    update_cache: no
+  with_items:
+    - "deb http://old-releases.ubuntu.com/ubuntu/ artful main restricted universe multiverse"
+    - "deb http://old-releases.ubuntu.com/ubuntu/ artful-updates main restricted universe multiverse"
+    - "deb http://old-releases.ubuntu.com/ubuntu/ artful-security main restricted universe multiverse"
+
 - name: "Install aptitude"
   raw: apt-get install -y aptitude
   become: true
