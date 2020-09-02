@@ -2,6 +2,8 @@
 
 This repo contains tools for setting up a computer for usage with Divdat Play.
 
+The repository is kept for reference, the Ubuntu-based system is superseded by [PlayOS](https://github.com/dividat/playos).
+
 ## Directories
 
 -   `roles/`: Ansible roles
